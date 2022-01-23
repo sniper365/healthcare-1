@@ -7,14 +7,23 @@ export function useHealthCareApi(): HealthCareApi {
   const { functions } = useContract(contractAddress, HealthCareAbi.abi);
   return {
     grantAdminAccess: functions.grantAdminAccess,
-    canWrite: functions.canWrite,
     grantWriteAccess: functions.grantWriteAccess,
+    canWrite: functions.canWrite,
+    canGiveAccess: functions.canGiveAccess,
+
     addPatientRecord: functions.addPatientRecord,
+    getPatientsInfo: functions.getPatientsInfo,
     getPatientRecords: functions.getPatientRecords,
     getPatientRecord: functions.getPatientRecord,
-    isRegistered: functions.isRegistered,
+
+    getDoctorsInfo: functions.getDoctorsInfo,
+    getDoctorRecord: functions.getDoctorRecord,
+    getDoctorRecords: functions.getDoctorRecords,
+
+    isRegisteredAsPatient: functions.isRegisteredAsPatient,
     registerAsPatient: functions.registerAsPatient,
-    getPatientsInfo: functions.getPatientsInfo,
-    canGiveAccess: functions.canGiveAccess,
+    
+    isRegisteredAsDoctor: functions.isRegisteredAsDoctor,
+    registerAsDoctor: functions.registerAsDoctor,
   };
 }

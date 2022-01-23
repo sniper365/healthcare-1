@@ -3,10 +3,12 @@
     "navigation": {
       "title": "HealthCare",
       "home": "Home",
-      "register": "Register as patient",
+      "register": "Register as Patient",
+      "registerasdoctor": "Register as Doctor",
       "your-data": "My Record",
       "manage-data": "Patients",
-      "give-access": "Give Access"
+      "give-access": "Give Access",
+      "doctors": "Doctors"
     },
     "user-info": {
       "logged-as": "You are logged as",
@@ -16,7 +18,8 @@
     "user-roles": {
       "guest": "Guest",
       "patient": "Patient",
-      "doctor": "Doctor",
+      "registeredDoctor": "Doctor",
+      "unregisteredDoctor": "Doctor (You are not registered.)",
       "administrator": "Administrator"
     },
     "input-labels": {

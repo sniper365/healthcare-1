@@ -24,6 +24,7 @@ export function PatientOverview(props: PatientOverviewProps) {
 
   const onAdd = () => history.push(`${match.url}/new/${props.patientInfo.id}`);
   const onView = () => history.push(`${match.url}/${props.patientInfo.id}`);
+  console.log('patient:',props.patientInfo)
 
   return (
     <ListItem>

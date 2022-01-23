@@ -7,7 +7,7 @@ import {
   ListItemText,
   Tooltip,
 } from '@material-ui/core';
-import { Add, Fingerprint, HowToReg, List, Wc } from '@material-ui/icons';
+import { Add, Fingerprint, HowToReg, List, Wc,OpenInNew } from '@material-ui/icons';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useTranslator } from '../../hooks/useTranslator';
 import { DoctorInfo } from '../../lib/types/DoctorInfo';
@@ -22,7 +22,9 @@ export function DoctorOverview(props: DoctorOverviewProps) {
   const match = useRouteMatch();
   const { translate } = useTranslator();
 
-  const onAdd = () => history.push(`${match.url}/new/${props.doctorInfo.id}`);
+  console.info('inselect url',match.url);
+  console.info('inselect',props.doctorInfo);
+  // const onAdd = () => history.push(`${match.url}/new/${props.doctorInfo.id}`);
   const onView = () => history.push(`${match.url}/${props.doctorInfo.id}`);
 
   return (
@@ -35,7 +37,7 @@ export function DoctorOverview(props: DoctorOverviewProps) {
         secondary={<DoctorSecondaryInfo doctorInfo={props.doctorInfo} />}
       />
       <ListItemSecondaryAction>
-        <Tooltip title={translate('tooltips.add-record')} placement="left">
+        {/* <Tooltip title={translate('tooltips.add-record')} placement="left">
           <Fab
             className="doctor-item-action"
             onClick={onAdd}
@@ -44,7 +46,7 @@ export function DoctorOverview(props: DoctorOverviewProps) {
           >
             <Add />
           </Fab>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={translate('tooltips.view-records')} placement="right">
           <Fab
             className="doctor-item-action"
@@ -52,8 +54,8 @@ export function DoctorOverview(props: DoctorOverviewProps) {
             color="primary"
             size="small"
           >
-            <List />
-          </Fab>
+            <OpenInNew />
+          </Fab>          
         </Tooltip>
       </ListItemSecondaryAction>
     </ListItem>

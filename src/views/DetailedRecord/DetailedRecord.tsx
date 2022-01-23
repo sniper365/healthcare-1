@@ -31,6 +31,7 @@ export function DetailedRecord() {
         const record = (
           await getPatientRecord(patientAddress, +patientRecordId)
         )[0];
+        console.info(record);
         setRecord(record);
       }
       dispatchNotLoading();
@@ -61,17 +62,17 @@ export function DetailedRecord() {
             {record?.title}
           </Typography>
         </CardContent>
-        <CardContent>
+        {/* <CardContent>
           {secondaryContent.map((data) => (
             <Typography key={data} variant="subtitle1" color="primary">
               {data}
             </Typography>
           ))}
-        </CardContent>
+        </CardContent> */}
         <CardContent>
           <Typography variant="body1">{record?.description}</Typography>
         </CardContent>
-        {record?.tags && (
+        {/* {record?.tags && (
           <CardContent>
             <Tags tags={record?.tags} />
           </CardContent>
@@ -80,7 +81,7 @@ export function DetailedRecord() {
           <CardActions>
             <FileDownloadButton fileInfo={record.attachment} />
           </CardActions>
-        )}
+        )} */}
       </Card>
     </PatientAddressAccess>
   );

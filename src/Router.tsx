@@ -5,15 +5,18 @@ import { useAppLoading } from './hooks/useAppLoading';
 import { canWrite } from './lib/helpers/UserRoleHelper';
 import { AddRecordForm } from './views/AddRecordForm/AddRecordForm';
 import { DetailedRecord } from './views/DetailedRecord/DetailedRecord';
+import { DetailedInfo } from './views/DetailedInfo/DetailedInfo';
 import { GrantAccess } from './views/GrantAccess/GrantAccess';
 import { Home } from './views/Home/Home';
 import { Navigation } from './components/Navigation/Navigation';
 import { PatientRegister } from './views/PatientRegister/PatientRegister';
+import { DoctorRegister } from './views/DoctorRegister/DoctorRegister';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 import { RecordList } from './views/RecordList/RecordList';
 import { SelectPatient } from './views/SelectPatient/SelectPatient';
 import { useUserRole } from './hooks/useUserRole';
 import { UserRole } from './lib/types/UserRole';
+import { SelectDoctor } from './views/SelectDoctor/SelectDoctor';
 
 export function Router() {
   const { userRole, fetchUserRole } = useUserRole();
@@ -58,7 +61,6 @@ export function Router() {
           callback={() => userRole === UserRole.ADMIN}
         >
           <GrantAccess />
-          {/* <AddRecordForm /> */}
         </PrivateRoute>
         <PrivateRoute
           path="/register"
@@ -67,6 +69,20 @@ export function Router() {
         >
           <PatientRegister onRegister={fetchUserRole} />
         </PrivateRoute>
+        <PrivateRoute
+          path="/registerasdoctor"
+          redirectPath="/"
+          callback={() => userRole === UserRole.UNREGISTERED_DOCTOR}
+        >
+          <DoctorRegister onRegister={fetchUserRole} />
+        </PrivateRoute>
+        <Route path="/doctors/:doctorAddress">
+          <DetailedInfo />
+        </Route>
+        <PrivateRoute path="/doctors" redirectPath="/" callback={() => true}>
+          <SelectDoctor />
+        </PrivateRoute>
+
         <Route path="/">
           <Home />
         </Route>

@@ -4,7 +4,8 @@ import { UserRole } from '../types/UserRole';
 export function canWrite(role: UserRole): boolean {
   switch (role) {
     case UserRole.ADMIN:
-    case UserRole.DOCTOR:
+    case UserRole.REGISTERED_DOCTOR:
+    case UserRole.UNREGISTERED_DOCTOR:
       return true;
   }
   return false;
@@ -17,16 +18,30 @@ export function getNavigationOptions(role: UserRole): NavigationOptions[] {
         NavigationOptions.VIEW_PERSONAL_DATA,
         NavigationOptions.MANAGE_PATIENT_DATA,
         NavigationOptions.GIVE_ACCESS_RIGHTS,
+        NavigationOptions.DOCTORS,
       ];
-    case UserRole.DOCTOR:
+    case UserRole.REGISTERED_DOCTOR:
       return [
         NavigationOptions.VIEW_PERSONAL_DATA,
         NavigationOptions.MANAGE_PATIENT_DATA,
+        NavigationOptions.DOCTORS,
+      ];
+    case UserRole.UNREGISTERED_DOCTOR:
+      return [
+        NavigationOptions.VIEW_PERSONAL_DATA,
+        NavigationOptions.REGISTERASDOCTOR,
+        NavigationOptions.DOCTORS,
       ];
     case UserRole.PATIENT:
-      return [NavigationOptions.VIEW_PERSONAL_DATA];
+      return [
+        NavigationOptions.VIEW_PERSONAL_DATA,
+        NavigationOptions.DOCTORS,
+      ];
     case UserRole.GUEST:
     default:
-      return [NavigationOptions.REGISTER];
+      return [
+        NavigationOptions.REGISTER,
+        NavigationOptions.DOCTORS,
+      ];
   }
 }

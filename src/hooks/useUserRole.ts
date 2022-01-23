@@ -6,7 +6,7 @@ import { useHealthCareApi } from './useHealthCareApi';
 export function useUserRole() {
   const dispatch = useAppDispatch();
   const userRole = useAppSelector(selectUserRole);
-  const { canWrite, canGiveAccess, isRegistered } = useHealthCareApi();
+  const { canWrite, canGiveAccess, isRegisteredAsPatient, isRegisteredAsDoctor } = useHealthCareApi();
 
   const dispatchSetUserRole = (role: UserRole) => {
     dispatch(setUserRole(role));
@@ -18,12 +18,17 @@ export function useUserRole() {
       dispatchSetUserRole(UserRole.ADMIN);
       return;
     }
-    const isEditor = (await canWrite())[0];
-    if (isEditor) {
-      dispatchSetUserRole(UserRole.DOCTOR);
+    const isRegisteredDoctor = (await isRegisteredAsDoctor())[0];
+    if (isRegisteredDoctor) {
+      dispatchSetUserRole(UserRole.REGISTERED_DOCTOR);
       return;
     }
-    const isPatient = (await isRegistered())[0];
+    const heCanWrite = (await canWrite())[0];
+    if (heCanWrite) {
+      dispatchSetUserRole(UserRole.UNREGISTERED_DOCTOR);
+      return;
+    }
+    const isPatient = (await isRegisteredAsPatient())[0];
     if (isPatient) {
       dispatchSetUserRole(UserRole.PATIENT);
       return;

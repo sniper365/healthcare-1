@@ -2,6 +2,7 @@ export enum UserRole {
   UNASSIGNED = 'unassigned',
   GUEST = 'guest',
   PATIENT = 'patient',
-  DOCTOR = 'doctor',
+  REGISTERED_DOCTOR = 'registeredDoctor',
+  UNREGISTERED_DOCTOR = 'unregisteredDoctor',
   ADMIN = 'administrator',
 }

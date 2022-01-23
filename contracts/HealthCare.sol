@@ -10,7 +10,8 @@ pragma solidity ^0.8.4;
 contract HealthCare {
     struct UserRole {
         bool isAdmin;
-        bool isDoctor;
+        bool isRegisteredDoctor;
+        bool isUnregisteredDoctor;
         bool isPatient;
         bool isGuest;
     }
@@ -19,6 +20,16 @@ contract HealthCare {
         string name;
         string nationalId;
         string gender;
+        address id;
+        bool registered;
+    }
+
+    struct DoctorInfo {
+        string name;
+        string nationalId;
+        string gender;
+        string specialty;
+        uint yearsOfExperience;
         address id;
         bool registered;
     }
@@ -35,37 +46,61 @@ contract HealthCare {
         string attachment;
     }
 
+    struct DoctorRecord {
+        uint256 id;
+        address doctor;
+        string name;
+        string nationalId;
+        string gender;
+        string specialty;
+        uint yearsOfExperience;
+        uint256 date;
+    }
     event PatientRecordPublished(uint256 id, address patient);
+    event DoctorRecordPublished(uint256 id, address doctor);
 
     event PatientRegistered(address patient);
+    event DoctorRegistered(address doctor);
 
     mapping(address => UserRole) private userRoles;
 
     mapping(address => uint256) private recordsForPatients;
+    mapping(address => uint256) private recordsForDoctors;
     /*
      *@notice it maps the patient address to a nested mapping of unit => PatientRecord
      */
     mapping(address => mapping(uint256 => PatientRecord))
         private patientRecords;
+    mapping(address => DoctorRecord) private doctorRecords;
 
     address[] private registeredPatients;
+    address[] private registeredDoctors;
+
     mapping(address => PatientInfo) private patientsInfo;
+    mapping(address => DoctorInfo) private doctorsInfo;
 
     /*
      *@dev only the creator, maybe admin, has access rights
      */
     constructor() {
-        userRoles[msg.sender] = UserRole(true, true, false, false);
+        userRoles[msg.sender] = UserRole(true, true,true, false, false);
     }
 
     /**
      * --------  modifiers  --------
      */
 
-    modifier onlyDoctors() {
+    modifier onlyRegisteredDoctors() {
         require(
-            userRoles[msg.sender].isDoctor,
-            'You have no sufficient access right to implement this action.'
+            userRoles[msg.sender].isRegisteredDoctor,
+            'You are not registered doctor.'
+        );
+        _;
+    }
+    modifier onlyUnregisteredDoctors() {
+        require(
+            userRoles[msg.sender].isUnregisteredDoctor,
+            'You are not unregistered doctor.'
         );
         _;
     }
@@ -73,19 +108,20 @@ contract HealthCare {
     modifier onlyAdmins() {
         require(
             userRoles[msg.sender].isAdmin,
-            'You have no sufficient access right to implement this action.'
+            'You are not admin.'
         );
         _;
     }
 
     modifier onlyViewer(address _patient) {
         bool isAdmin = userRoles[msg.sender].isAdmin;
-        bool isDoctor = userRoles[msg.sender].isDoctor;
+        bool isRegisteredDoctor = userRoles[msg.sender].isRegisteredDoctor;
+        bool isUnregisteredDoctor = userRoles[msg.sender].isUnregisteredDoctor;
         bool isPatient = (msg.sender == _patient);
-        bool registered = isRegistered();
+        bool registered = isRegisteredAsPatient();
         require(
-            isAdmin || isDoctor || (isPatient && registered),
-            'You have no sufficient access right to implement this action.'
+            isAdmin || isRegisteredDoctor || isUnregisteredDoctor || (isPatient && registered),
+            'You are not viewer.'
         );
         _;
     }
@@ -103,7 +139,7 @@ contract HealthCare {
     */
 
     function canWrite() public view returns (bool) {
-        return userRoles[msg.sender].isDoctor;
+        return userRoles[msg.sender].isUnregisteredDoctor || userRoles[msg.sender].isRegisteredDoctor;
     }
 
     function canGiveAccess() public view returns (bool) {
@@ -122,7 +158,7 @@ contract HealthCare {
         address _medicalCenter,
         string[] memory _tags,
         string memory _attachment
-    ) public onlyDoctors {
+    ) public onlyRegisteredDoctors {
         patientRecords[_patient][recordsForPatients[_patient]] = PatientRecord(
             recordsForPatients[_patient],
             _title,
@@ -166,10 +202,11 @@ contract HealthCare {
         return result;
     }
 
+
+
     function getPatientsInfo()
         public
         view
-        onlyDoctors
         returns (PatientInfo[] memory)
     {
         uint256 registeredPatientsCount = registeredPatients.length;
@@ -183,11 +220,27 @@ contract HealthCare {
         return result;
     }
 
+    function getDoctorsInfo()
+        public
+        view
+        returns (DoctorInfo[] memory)
+    {
+        uint256 registeredDoctorsCount = registeredDoctors.length;
+        DoctorInfo[] memory result = new DoctorInfo[](
+            registeredDoctorsCount
+        );
+        for (uint256 i = 0; i < registeredDoctorsCount; i++) {
+            address currentDoctor = registeredDoctors[i];
+            result[i] = doctorsInfo[currentDoctor];
+        }
+        return result;
+    }
+
     /** 
     * ---------  Register as Patient  -----------
     */
 
-    function isRegistered() public view returns (bool) {
+    function isRegisteredAsPatient() public view returns (bool) {
         return patientsInfo[msg.sender].registered;
     }
 
@@ -196,7 +249,7 @@ contract HealthCare {
         string memory _nationalId,
         string memory _gender
     ) public {
-        require(!isRegistered(), 'Patient is already registered');
+        require(!isRegisteredAsPatient(), 'Patient is already registered');
         patientsInfo[msg.sender] = PatientInfo(
             _name,
             _nationalId,
@@ -207,6 +260,95 @@ contract HealthCare {
         registeredPatients.push(msg.sender);
         emit PatientRegistered(msg.sender);
     }
+    /** 
+    * ---------  Register as Doctor  -----------
+    */
+
+    function isRegisteredAsDoctor() public view returns (bool) {
+        return doctorsInfo[msg.sender].registered;
+    }
+
+    // function registerAsDoctor(
+    //     string memory _name,
+    //     string memory _nationalId,
+    //     string memory _gender,
+    //     string memory _specialty,
+    //     uint256 _yearsOfExperience
+    // ) public onlyUnregisteredDoctors {
+    //     require(!isRegisteredAsDoctor(), 'Doctor is already registered');
+    //     doctorsInfo[msg.sender] = DoctorInfo(
+    //         _name,
+    //         _nationalId,
+    //         _gender,
+    //         _specialty,
+    //         _yearsOfExperience,
+    //         msg.sender,
+    //         true
+    //     );
+    //     registeredDoctors.push(msg.sender);
+    //     userRoles[msg.sender].isRegisteredDoctor;
+    //     emit DoctorRegistered(msg.sender);
+    // }
+    function registerAsDoctor(
+        address _doctor,
+        string memory _name,
+        string memory _nationalId,
+        string memory _gender,
+        string memory _specialty,
+        uint256 _yearsOfExperience
+    ) public onlyUnregisteredDoctors {
+        require(!isRegisteredAsDoctor(), 'Doctor is already registered');
+        doctorsInfo[msg.sender] = DoctorInfo(
+            _name,
+            _nationalId,
+            _gender,
+            _specialty,
+            _yearsOfExperience,
+            msg.sender,
+            true
+        );
+        doctorRecords[_doctor] = DoctorRecord(
+            recordsForDoctors[_doctor],
+            _doctor,
+            _name,
+            _nationalId,
+            _gender,
+            _specialty,
+            _yearsOfExperience,
+            block.timestamp
+        );
+        registeredDoctors.push(msg.sender);
+        userRoles[_doctor].isRegisteredDoctor = true;
+        emit DoctorRecordPublished(recordsForDoctors[_doctor]++, _doctor);
+    }
+
+    function getDoctorRecord(address _doctor)
+        public
+        view
+        returns (DoctorRecord memory)
+    {
+        // require(
+        //     recordsForDoctors[_doctor] > _recordId,
+        //     'Invalid doctor record ID'
+        // );
+        return doctorRecords[_doctor];
+    }
+
+    function getDoctorRecords(address _doctor)
+        public
+        view
+        returns (DoctorRecord[] memory)
+    {
+        uint256 recordsCountForUser = recordsForDoctors[_doctor];
+        DoctorRecord[] memory result = new DoctorRecord[](
+            recordsCountForUser
+        );
+        for (uint256 i = 0; i < recordsCountForUser; i++) {
+            result[i] = doctorRecords[_doctor];
+        }
+        return result;
+    }
+
 
     /**
      * ----------  grant Access to the others  --------------
@@ -218,17 +360,17 @@ contract HealthCare {
         payETH(0.1 ether)
     {
         userRoles[_user].isAdmin = true;
-        userRoles[_user].isDoctor = true;
-        _user.transfer(10 ether);
+        userRoles[_user].isRegisteredDoctor = true;
+        _user.transfer(0.1 ether);
     }
 
     function grantWriteAccess(address payable _user)
         public
         payable
         onlyAdmins
-        payETH(3 ether)
+        payETH(0.03 ether)
     {
-        userRoles[_user].isDoctor = true;
+        userRoles[_user].isUnregisteredDoctor = true;
         _user.transfer(0.03 ether);
     }
 }

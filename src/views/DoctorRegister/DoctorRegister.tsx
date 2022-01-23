@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAppLoading } from '../../hooks/useAppLoading';
 import { useHealthCareApi } from '../../hooks/useHealthCareApi';
 import { useHistory } from 'react-router-dom';
+import { useAccount } from '../../hooks/useAccount';
 import { TextInputField } from '../../components/Inputs/TextInputField';
 import { NumberInputField } from '../../components/Inputs/NumberInputField';
 import { useNotifications } from '../../hooks/useNotifications';
@@ -16,8 +17,10 @@ interface DoctorRegisterProps {
 }
 
 export function DoctorRegister(props: DoctorRegisterProps) {
+
   const { registerAsDoctor } = useHealthCareApi();
   const { dispatchLoading, dispatchNotLoading } = useAppLoading();
+  const { account } = useAccount();
   const { translate } = useTranslator();
   const history = useHistory();
   const { pushSuccessNotification, pushErrorNotification } = useNotifications();
@@ -27,19 +30,26 @@ export function DoctorRegister(props: DoctorRegisterProps) {
   const [specialty, setSpecialty] = useState('');
   const [yearsOfExperience, setYearsOfExperience] = useState(0);
 
-
   const register = async () => {
     dispatchLoading();
     try {
-      await registerAsDoctor(name, nationalId, gender, specialty, yearsOfExperience);
+      await registerAsDoctor(
+        account as string,
+        name,
+        nationalId,
+        gender,
+        specialty,
+        yearsOfExperience
+      );
       props.onRegister();
       history.push('/');
       pushSuccessNotification('notifications.register-success');
     } catch (err) {
-      // console.info(err.message);      
+      // console.info(err.message);
       pushErrorNotification('notifications.register-error');
     } finally {
       dispatchNotLoading();
+      history.push(`/doctors`);
     }
   };
   const isValid = () => {
@@ -50,6 +60,13 @@ export function DoctorRegister(props: DoctorRegisterProps) {
       <UserInfo />
       <Paper elevation={2} className="register-form">
         <form onSubmit={(e) => e.preventDefault()}>
+          <TextInputField
+            className="register-form-item"
+            placeholder={translate('input-labels.patient-address')}
+            value={account as string}
+            address
+            disabled
+          />
           <TextInputField
             className="register-form-item"
             placeholder={translate('input-labels.doctor-name')}
@@ -80,8 +97,8 @@ export function DoctorRegister(props: DoctorRegisterProps) {
           />
           <NumberInputField
             className="register-form-item"
-            placeholder= {translate('input-labels.doctor-yearsOfExperience')}
-            type='number'
+            placeholder={translate('input-labels.doctor-yearsOfExperience')}
+            type="number"
             value={yearsOfExperience}
             onChange={setYearsOfExperience}
             required

@@ -1,5 +1,7 @@
 import { PatientRecord } from './PatientRecord';
 import { PatientInfo } from './PatientInfo';
+import { DoctorInfo } from './DoctorInfo';
+import { DoctorRecord } from './DoctorRecord';
 
 export interface HealthCareApi {
   grantAdminAccess: (user: string, overrides?: any) => Promise<void>;
@@ -20,11 +22,25 @@ export interface HealthCareApi {
     user: string,
     recordId: number
   ) => Promise<PatientRecord[]>;
-  isRegistered: () => Promise<boolean[]>;
+  getDoctorRecords: (user: string) => Promise<DoctorRecord[][]>;
+  getDoctorRecord: (
+    user: string
+  ) => Promise<DoctorRecord>;
+  isRegisteredAsPatient: () => Promise<boolean[]>;
   registerAsPatient: (
     name: string,
     nationalId: string,
     gender: string
   ) => Promise<void>;
+  isRegisteredAsDoctor: () => Promise<boolean[]>;
+  registerAsDoctor: (
+    doctorAddress: string,
+    name: string,
+    nationalId: string,
+    gender: string,
+    specialty: string,
+    yearsOfExperience: number
+  ) => Promise<void>;
   getPatientsInfo: () => Promise<PatientInfo[][]>;
+  getDoctorsInfo: () => Promise<DoctorInfo[][]>;
 }

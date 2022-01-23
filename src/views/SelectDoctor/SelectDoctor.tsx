@@ -42,6 +42,7 @@ export function SelectDoctor() {
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       const doctorInfo = (await getDoctorsInfo())[0];
+      console.info(doctorInfo);
       setDoctorsInfoCache(doctorInfo);
     };
     fetchDoctorInfo();
@@ -66,7 +67,7 @@ export function SelectDoctor() {
         color="primary"
         variant="h3"
       >
-        {translate('view-labels.select-doctor')}
+        {translate('Find Doctors')}
       </Typography>
       <UserInfo/>
       <div className="select-doctor-search">

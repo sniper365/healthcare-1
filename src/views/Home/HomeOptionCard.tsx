@@ -32,11 +32,6 @@ export function HomeOptionCard(props: HomeOptionCardProps) {
           {props.description}
         </Typography>
       </CardContent>
-      <CardActions className="home-option-card-actions">
-        <Fab size="medium" color="primary" onClick={props.onClick}>
-          <ArrowForwardIos />
-        </Fab>
-      </CardActions>
     </Card>
   );
 }

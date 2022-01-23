@@ -45,6 +45,16 @@ export function Navigation() {
         onSelect: () => onOptionSelected('/register'),
         icon: <MeetingRoom />,
       },
+      [NavigationOptions.REGISTERASDOCTOR]: {
+        label: 'navigation.registerasdoctor',
+        onSelect: () => onOptionSelected('/registerasdoctor'),
+        icon: <MeetingRoom />,
+      },
+      [NavigationOptions.DOCTORS]: {
+        label: 'navigation.doctors',
+        onSelect: () => onOptionSelected('/doctors'),
+        icon: <MeetingRoom />,
+      },
       [NavigationOptions.VIEW_PERSONAL_DATA]: {
         label: 'navigation.your-data',
         onSelect: () => onOptionSelected(`/patient-records/${account}`),

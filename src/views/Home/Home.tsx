@@ -31,6 +31,18 @@ export function Home() {
         onClick: () => history.push('/register'),
         icon: <MeetingRoom color="primary" />,
       },
+      [NavigationOptions.REGISTERASDOCTOR]: {
+        title: 'Register as Doctor',
+        description: 'Register as Doctor. Note: You have to be granted to writability',
+        onClick: () => history.push('/registerasdoctor'),
+        icon: <MeetingRoom color="primary" />,
+      },
+      [NavigationOptions.DOCTORS]: {
+        title: 'Doctors',
+        description: 'Visit Our Famous and Kindness Doctors',
+        onClick: () => history.push('/doctors'),
+        icon: <MeetingRoom color="primary" />,
+      },
       [NavigationOptions.VIEW_PERSONAL_DATA]: {
         title: 'navigation.your-data',
         description: 'home-screen-options.your-data',
