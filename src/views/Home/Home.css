@@ -1,0 +1,11 @@
+.home-description-wrapper {
+    width: 75vw;
+    text-align: center;
+    margin: 8vh auto 6vh auto;
+}
+
+.home-card-options-wrapper {
+    display: flex;
+    justify-content: center;
+}
+

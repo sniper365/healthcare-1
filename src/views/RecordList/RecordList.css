@@ -1,0 +1,19 @@
+.record-list {
+    min-width: 400px;
+    width: 70%;
+    margin: 5vh auto;
+}
+
+.record-list-search {
+    display: flex;
+    justify-content: center;
+}
+
+.no-records-found {
+    height: inherit;
+    padding-top: 50px;
+}
+
+.record-title {
+    text-align: center;
+}

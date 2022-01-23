@@ -1,0 +1,13 @@
+.select-doctor {
+    width: 60%;
+    margin: 5vh auto;
+}
+
+.select-doctor-description {
+    text-align: center;
+}
+
+.select-doctor-search > * {
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,18 @@
+.grant-access-description {
+    text-align: center;
+    margin: 5vh auto auto auto !important;
+}
+
+.grant-access-actions {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.grant-access-address-input {
+    min-width: 400px !important;
+}
+
+.grant-access-button {
+    margin: 10px !important;
+}
