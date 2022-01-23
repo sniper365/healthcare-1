@@ -27,8 +27,7 @@ export function DetailedInfo() {
       dispatchLoading();
         const record = (
           await getDoctorRecord(doctorAddress)
-        );
-        console.info(record);
+        )[0];
         setRecord(record);
       dispatchNotLoading();
     };
@@ -41,47 +40,35 @@ export function DetailedInfo() {
       `${translate('input-labels.doctor-address')}: ${record?.name}`,
       `${translate('input-labels.doctor-address')}: ${record?.gender}`,
       `${translate('input-labels.doctor-address')}: ${record?.specialty}`,
-      `${translate('input-labels.doctor-address')}: ${record?.yearsOfExperience}`,
-      `${translate('input-labels.medical-center-address')}: ${
-        record?.id
-      }`,
+      `${translate('input-labels.doctor-address')}: ${record?.yearsOfExperience.toString()}`,
     ],
     [record, translate]
   );
 
-
   return (
-    <>
-    {record?.name}
-    </>
-    // <DoctorAddressAccess doctorRecordAddress={doctorAddress}>
-    //   <Card className="detailed-record">
-    //     <CardContent>
-    //       <Typography variant="h4" color="primary">
-    //         {record?.name}
-    //       </Typography>
-    //     </CardContent>
-    //     <CardContent>
-    //       <Typography variant="h4" color="primary">
-    //         {record?.gender}
-    //       </Typography>
-    //     </CardContent>
-    //     <CardContent>
-    //       <Typography variant="h4" color="primary">
-    //         {record?.specialty}
-    //       </Typography>
-    //     </CardContent>
-    //     <CardContent>
-    //       <Typography variant="h4" color="primary">
-    //         {record?.yearsOfExperience}
-    //       </Typography>
-    //     </CardContent>
-    //     <CardContent>
-    //       <Typography variant="h4" color="primary">
-    //         {record?.id}
-    //       </Typography>
-    //     </CardContent>        
-    //   </Card>
-    // </DoctorAddressAccess>
+    <DoctorAddressAccess doctorRecordAddress={doctorAddress}>
+      <Card className="detailed-record">
+        <CardContent>
+          <Typography variant="h4" color="primary">
+            {`Name: ${record?.name}`}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Typography variant="h4" color="primary">
+            {`Gender: ${record?.gender}`}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Typography variant="h4" color="primary">
+            {`Specialty: ${record?.specialty}`}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Typography variant="h4" color="primary">
+            {`Years of Experience: ${record?.yearsOfExperience.toString()}`}
+          </Typography>
+        </CardContent>
+      </Card>
+    </DoctorAddressAccess>
   );
 }

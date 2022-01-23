@@ -42,7 +42,6 @@ export function SelectDoctor() {
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       const doctorInfo = (await getDoctorsInfo())[0];
-      console.info(doctorInfo);
       setDoctorsInfoCache(doctorInfo);
     };
     fetchDoctorInfo();

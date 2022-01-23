@@ -27,9 +27,7 @@ export function GrantAccess() {
     etherValue: string,
     message: string
   ) => {
-    console.info(etherValue, message)
     dispatchLoading();
-    console.info(userAddress);
     try {
       await contractFunction(userAddress, {
         value: parseEther(etherValue),

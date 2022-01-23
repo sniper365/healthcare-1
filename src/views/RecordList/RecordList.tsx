@@ -35,7 +35,6 @@ export function RecordList() {
     const retrievePatientRecords = async () => {
       dispatchLoading();
       const resultArray = await getPatientRecords(patientAddress);
-      console.info(resultArray);
       setPatientRecordsCache(resultArray[0]);
       setPatientRecordsView(resultArray[0]);
       dispatchNotLoading();

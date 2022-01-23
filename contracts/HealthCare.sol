@@ -47,17 +47,15 @@ contract HealthCare {
     }
 
     struct DoctorRecord {
-        uint256 id;
-        address doctor;
         string name;
         string nationalId;
         string gender;
         string specialty;
         uint yearsOfExperience;
-        uint256 date;
+        // uint256 date;
     }
     event PatientRecordPublished(uint256 id, address patient);
-    event DoctorRecordPublished(uint256 id, address doctor);
+    // event DoctorRecordPublished(uint256 id);
 
     event PatientRegistered(address patient);
     event DoctorRegistered(address doctor);
@@ -308,18 +306,16 @@ contract HealthCare {
             true
         );
         doctorRecords[_doctor] = DoctorRecord(
-            recordsForDoctors[_doctor],
-            _doctor,
             _name,
             _nationalId,
             _gender,
             _specialty,
-            _yearsOfExperience,
-            block.timestamp
+            _yearsOfExperience
+            // block.timestamp
         );
         registeredDoctors.push(msg.sender);
         userRoles[_doctor].isRegisteredDoctor = true;
-        emit DoctorRecordPublished(recordsForDoctors[_doctor]++, _doctor);
+        // emit DoctorRecordPublished(doctorRecords[_doctor]);
     }
 
     function getDoctorRecord(address _doctor)

@@ -18,7 +18,7 @@ interface HomeOptionCardProps {
 
 export function HomeOptionCard(props: HomeOptionCardProps) {
   return (
-    <Card className="home-option-card">
+    <Card className="home-option-card" color="primary">
       <CardContent className="home-option-card-content">
         <div className="home-option-card-icon">{props.icon}</div>
         <Typography

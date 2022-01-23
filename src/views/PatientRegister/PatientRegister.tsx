@@ -33,9 +33,7 @@ export function PatientRegister(props: PatientRegisterProps) {
       history.push('/');
       pushSuccessNotification('notifications.register-success');
     } catch (err) {
-      console.info(err);
-      
-      pushErrorNotification('notifications.register-error');
+       pushErrorNotification('notifications.register-error');
     } finally {
       dispatchNotLoading();
     }

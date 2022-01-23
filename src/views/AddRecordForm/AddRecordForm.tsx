@@ -54,8 +54,7 @@ export function AddRecordForm() {
       );
       pushSuccessNotification('notifications.add-record-success');
     } catch (e) {
-      console.info(e)
-      // pushErrorNotification('notifications.add-record-error');
+      pushErrorNotification('notifications.add-record-error');
     }
     dispatchNotLoading();
     history.push(`/patient-records/${patientAddress}`);

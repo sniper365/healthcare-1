@@ -45,7 +45,6 @@ export function DoctorRegister(props: DoctorRegisterProps) {
       history.push('/');
       pushSuccessNotification('notifications.register-success');
     } catch (err) {
-      // console.info(err.message);
       pushErrorNotification('notifications.register-error');
     } finally {
       dispatchNotLoading();

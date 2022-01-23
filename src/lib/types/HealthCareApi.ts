@@ -25,7 +25,7 @@ export interface HealthCareApi {
   getDoctorRecords: (user: string) => Promise<DoctorRecord[][]>;
   getDoctorRecord: (
     user: string
-  ) => Promise<DoctorRecord>;
+  ) => Promise<DoctorRecord[]>;
   isRegisteredAsPatient: () => Promise<boolean[]>;
   registerAsPatient: (
     name: string,
