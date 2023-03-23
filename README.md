@@ -1,4 +1,4 @@
-##### HealthCare
+##### HealthCare System on Ethereum
 ### Decentralized application for managing Health Medical Records
 
 ### Motivation
